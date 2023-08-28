@@ -1,0 +1,58 @@
+---
+# tasks file for mavenapp
+- name: Download JAR file
+  get_url:
+    url: "{{ jar_file_url }}"
+    dest: "{{ dest_jar_file }}"
+
+- name: Append 'execute' permission
+  file:
+    path: "{{ dest_jar_file | basename }}"
+    owner: "{{ os_user }}"
+    mode: "0744"
+
+- name: Check if file exists using file module
+  file:
+    path: "/home/{{ os_user }}/{{ java17_package | basename}}"
+    state: file
+  register: file_status
+  ignore_errors: true
+
+
+- name: Download Java 17
+  get_url:
+    url: "{{ java17_package }}"
+    dest: /home/{{ os_user }}
+  when: file_status.state == "absent"
+
+- name: Install Java 17
+  become: true
+  yum:
+    name: /home/{{ os_user }}/{{ java17_package | basename }}
+    state: present
+
+- name: Create WebApp systemd service
+  become: true
+  template:
+    src: webapp-service.j2
+    dest: /etc/systemd/system/{{ service_name }}.service
+
+- name: Restart Daemon services
+  become: true
+  systemd:
+    daemon_reload: true
+
+- name: Start WebApp Service
+  become: true
+  service:
+    name: "{{ service_name }}"
+    state: started
+
+- name: Enable port 8080 for web access
+  become: true
+  firewalld:
+    port: 8080/tcp
+    permanent: true
+    state: enabled
+    immediate: true
+  when: ansible_os_family == "RedHat"

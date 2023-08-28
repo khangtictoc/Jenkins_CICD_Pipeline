@@ -1,0 +1,7 @@
+---
+- name: Deploy Web Application
+  hosts: centos
+  roles:
+  - mavenapp
+  - nginx
+

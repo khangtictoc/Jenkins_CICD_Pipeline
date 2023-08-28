@@ -1,0 +1,16 @@
+[Unit]
+Description=Simple Pet Clinic spring boot application
+After=syslog.target
+After=network.target[Service]
+User={{ os_user }}
+Type=simple
+
+[Service]
+ExecStart=/usr/bin/java -jar /home/{{ os_user }}/{{ jar_file_release }}
+Restart=always
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier={{ service_name }}
+
+[Install]
+WantedBy=multi-user.target

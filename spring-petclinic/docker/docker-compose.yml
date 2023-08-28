@@ -1,0 +1,9 @@
+version: "3.8"
+services:
+  webapp:
+    container_name: ${CONTAIN_NAME}
+    image: ${IMAGE_NAME}
+    volumes:
+    - "/home/vagrant/logs:/tmp/petclinic-project/logs"
+    ports:
+    - "8080:8080"

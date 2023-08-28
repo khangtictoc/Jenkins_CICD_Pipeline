@@ -1,0 +1,5 @@
+---
+# vars file for mavenapp
+service_name: petclinicapp
+dest_jar_file: /home/{{ os_user }}/{{ jar_file_release }}
+java17_package: https://download.oracle.com/java/17/latest/jdk-17_linux-x64_bin.rpm

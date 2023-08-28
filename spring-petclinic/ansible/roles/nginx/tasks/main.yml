@@ -1,0 +1,35 @@
+---
+# tasks file for nginx
+- name: Disable SELinux
+  become: true
+  selinux:
+    state: disabled
+  when: ansible_os_family == "RedHat"
+
+- name: Install nginx
+  become: true
+  yum:
+    name: nginx
+    state: present
+
+- name: Start nginx service
+  become: true
+  service:
+    name: nginx
+    state: started
+
+- name: Config sites with reverse proxy
+  become: true
+  template:
+    src: nginx-mvnapp.j2
+    dest: /etc/nginx/conf.d/{{ service_name }}.conf
+
+- name: Enable port 80 for web access
+  become: true
+  firewalld:
+    port: 80/tcp
+    permanent: true
+    state: enabled
+    immediate: true
+  when: ansible_os_family == "RedHat"
+
