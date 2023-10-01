@@ -1,9 +1,23 @@
 version: "3.8"
 services:
-  webapp:
+  main:
     container_name: ${CONTAIN_NAME}
     image: ${IMAGE_NAME}
     volumes:
-    - "/home/vagrant/logs:/tmp/petclinic-project/logs"
+    - "/home/vagrant/${BRANCH}/logs:/tmp/petclinic-project/logs"
     ports:
-    - "8080:8080"
+    - "${PORT}:8080"
+  uat:
+    container_name: ${CONTAIN_NAME}
+    image: ${IMAGE_NAME}
+    volumes:
+    - "/home/vagrant/${BRANCH}/logs:/tmp/petclinic-project/logs"
+    ports:
+    - "${PORT}:8080"
+  dev:
+    container_name: ${CONTAIN_NAME}
+    image: ${IMAGE_NAME}
+    volumes:
+    - "/home/vagrant/${BRANCH}/logs:/tmp/petclinic-project/logs"
+    ports:
+    - "${PORT}:8080"

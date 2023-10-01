@@ -2,21 +2,28 @@ package com.example
 
 class Constants{
     def buildNum
+    def buildUrl
     def timestamp
     def branch
+
     def gitHash
     def version
     def relFileJar
     def relJarURL
 
-    Constants(def buildNum, def timestamp, def branch){
+    Constants(def buildNum, def buildUrl, def timestamp, def branch){
         this.buildNum = buildNum
+        this.buildUrl = buildUrl
         this.timestamp = timestamp
         this.branch = branch
     }
 
     def getBuildNum(){
         return buildNum
+    }
+
+    def getBuildUrl(){
+        return buildUrl
     }
 
     def getTimestamp(){
@@ -52,6 +59,22 @@ class Constants{
 
     def getVersion(){
         return version
+    }
+
+    def slackSuccessMsg(){
+        return """\
+                |*SUCCESS* on branch ${this.branch}\n
+                |Everything works correctly. Enjoy !!!\n
+                |(${this.timestamp}) Job jenkins-maven build number ${this.buildNum}\n
+                |More info at: ${this.buildUrl}""".stripMargin()
+    }
+
+    def slackFailMsg(){
+        return """\
+                |*FAILED* on branch ${this.branch}\n
+                |(${this.timestamp}) Job jenkins-maven build number ${this.buildNum}\n
+                |Something wrong happened. Carefully check it again !!!\n
+                |More info at: ${this.buildUrl}""".stripMargin()
     }
 
     static final APP_NAME = 'petclinic'
@@ -119,12 +142,16 @@ class Constants{
 
     static final DOCKER_COMPOSE_PATH = 'docker/docker-compose.yml'
     static final DOCKERFILE_PATH = 'docker/Dockerfile'
+    static final PULL_URL = "${NEXUSIP}:${RELEASE_DOCKER_HTTP_PORT}/${IMAGE_LATEST}"
     static final DOCKER_URL = "${NEXUSIP}:${RELEASE_DOCKER_HTTP_PORT}"
     static final CONTAIN_NAME = "${APP_NAME}"
+    static final UAT_PORT = 8090
+    static final MAIN_PORT = 8080
+    static final DEV_PORT = 8091
 
     ////// DEPLOYMENT HOST //////
     static final REMOTE_IPADDR = '192.168.56.25'
-    static final WEB_PORT = '8080'
+    static final WEB_PORT = "${MAIN_PORT}"
     static final REV_PROXY_PORT = '80'
 
     // SSH
@@ -139,18 +166,8 @@ class Constants{
     static final TEAM_DOMAIN = 'darkhero101neverdie'
     static final SUCESS_CHANNEL = '#jenkins-cicd-success'
     static final FAIL_CHANNEL = '#jenkins-cicd-failed'
-    static final BOT_ICON = 'img/avatars-000706520767-yiqbpu-t500x500.jpg'
+    static final BOT_ICON = 'resources/img/avatars-000706520767-yiqbpu-t500x500.jpg'
     static final BOT_NAME = 'loli-dam-dang'
-
-    static final MESSAGE_SUCCESS = """\
-    |*SUCCESS* \n
-    |Everything works correctly. Enjoy !!!\n
-    |More info at: 11""".stripMargin()
-
-    static final MESSAGE_FAILED = """\
-    |*FAILED* \n
-    |Something wrong happened. Carefully check it again !!!\n
-    |More info at: 11""".stripMargin()
 
     static final MESS_COLOR = '#439FE0'
     static final SLACK_TOKEN_ID = 'slack-notify-token'

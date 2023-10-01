@@ -4,6 +4,7 @@ def call(Map config){
                   config.branch + '-' +
                   config.gitHash
     sh "git checkout ${config.branch}"
+    sh "git pull"
     sh "git tag ${tagName} ${config.branch}"
     sh "git push origin ${tagName}"
     return tagName
