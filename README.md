@@ -4,7 +4,7 @@ Using Jenkins pipeline to deploy Maven Web Application (written in Scripted form
 ## Main Pipeline
 
 <p align="center">
-    <img src="resources/img/Jenkins_Pipeine.gif>
+    <img src="resources/img/Jenkins_Pipeine.gif">
 </p>
 
 ## Description
